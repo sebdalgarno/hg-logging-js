@@ -1,0 +1,9 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+.httr-oauth
+.slackr
+token.rds
+input/

@@ -1,21 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>D3: A dynamic, per-element delay before transition</title>
-		<script type="text/javascript" src="www/d3.js"></script>
-		<style type="text/css">
-			/* No style rules here yet */		
-		</style>
-	</head>
-	<body>
-	
-		<p>Click on this text to update the chart with new data values (once).</p>
-			
-		<script type="text/javascript">
+Shiny.addCustomMessageHandler("yearTotalJs",
+function(message){
+  
+  d3.selectAll("svg > *").remove();
 
- var data = d3.csv('year_totals.json');
- console.log(data);
+  var data = message;
     var w = 500;
     var h = 500;
     var barPadding = 0;
@@ -94,8 +82,11 @@ var yScale = d3.scaleLinear()
           .attr("class", "axis")
           .attr("transform", "translate(" + padding + ",0)")
           .call(yAxis);
+          
 
-			
-		</script>
-	</body>
-</html>
+
+});
+
+   
+
+
