@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+    .bar:hover {
+        fill: brown;
+    }
+
+    .axis--x path {
+        display: none;
+    }
+</style>
+</body>
+<p>Click on this text to update the chart with new (once).</p>
+
+<svg width="960" height="500"></svg>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script>
+
+    var svg = d3.select("svg"),
+        margin = { top: 20, right: 20, bottom: 30, left: 40 },
+        width = +svg.attr("width") - margin.left - margin.right,
+        height = +svg.attr("height") - margin.top - margin.bottom;
+
+    var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
+        y = d3.scaleLinear().rangeRound([height, 0]);
+
+    var g = svg.append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    var dataset = [{ "Year": 1901, "Total": 84.64, "Colour": "#E35E00" }, { "Year": 1902, "Total": 52.06, "Colour": "#E35F00" }, { "Year": 1903, "Total": 59.54, "Colour": "#E36000" }, { "Year": 1904, "Total": 72.96, "Colour": "#E36200" }, { "Year": 1905, "Total": 106.02, "Colour": "#E36300" }, { "Year": 1906, "Total": 96.19, "Colour": "#E46400" }, { "Year": 1907, "Total": 100.7, "Colour": "#E46600" }, { "Year": 1908, "Total": 172.19, "Colour": "#E46700" }, { "Year": 1909, "Total": 177.51, "Colour": "#E46900" }, { "Year": 1910, "Total": 205.72, "Colour": "#E56A00" }, { "Year": 1911, "Total": 173.22, "Colour": "#E56B00" }, { "Year": 1912, "Total": 85.96, "Colour": "#E56D00" }, { "Year": 1913, "Total": 202.79, "Colour": "#E56E00" }, { "Year": 1914, "Total": 112.26, "Colour": "#E67000" }, { "Year": 1915, "Total": 265.59, "Colour": "#E67100" }, { "Year": 1916, "Total": 282.97, "Colour": "#E67200" }, { "Year": 1917, "Total": 242.97, "Colour": "#E67400" }, { "Year": 1918, "Total": 224.07, "Colour": "#E77500" }, { "Year": 1919, "Total": 95.21, "Colour": "#E77600" }, { "Year": 1920, "Total": 117.72, "Colour": "#E77800" }, { "Year": 1921, "Total": 270.41, "Colour": "#E77900" }, { "Year": 1922, "Total": 238.2, "Colour": "#E87B00" }, { "Year": 1923, "Total": 314.48, "Colour": "#E87C00" }, { "Year": 1924, "Total": 517.59, "Colour": "#E87D00" }, { "Year": 1925, "Total": 90.88, "Colour": "#E87F00" }, { "Year": 1926, "Total": 697.9, "Colour": "#E98000" }, { "Year": 1927, "Total": 313.33, "Colour": "#E98200" }, { "Year": 1928, "Total": 364.12, "Colour": "#E98300" }, { "Year": 1929, "Total": 296.06, "Colour": "#E98400" }, { "Year": 1930, "Total": 642.58, "Colour": "#EA8600" }, { "Year": 1931, "Total": 442.13, "Colour": "#EA8700" }, { "Year": 1932, "Total": 120.13, "Colour": "#EA8900" }, { "Year": 1933, "Total": 65.91, "Colour": "#EA8A00" }, { "Year": 1934, "Total": 533.86, "Colour": "#EA8B00" }, { "Year": 1935, "Total": 1475.24, "Colour": "#EB8D00" }, { "Year": 1936, "Total": 679.95, "Colour": "#EB8E00" }, { "Year": 1937, "Total": 713.32, "Colour": "#EB8F00" }, { "Year": 1938, "Total": 564.2, "Colour": "#EB9100" }, { "Year": 1939, "Total": 106.2, "Colour": "#EC9200" }, { "Year": 1940, "Total": 1522.83, "Colour": "#EC9400" }, { "Year": 1941, "Total": 592.22, "Colour": "#EC9500" }, { "Year": 1942, "Total": 695.94, "Colour": "#EC9600" }, { "Year": 1943, "Total": 316.42, "Colour": "#ED9800" }, { "Year": 1944, "Total": 399.36, "Colour": "#ED9900" }, { "Year": 1945, "Total": 1123.46, "Colour": "#ED9B00" }, { "Year": 1946, "Total": 1197.25, "Colour": "#ED9C00" }, { "Year": 1947, "Total": 847.67, "Colour": "#EE9D00" }, { "Year": 1948, "Total": 1439.05, "Colour": "#EE9F00" }, { "Year": 1949, "Total": 1406.39, "Colour": "#EEA000" }, { "Year": 1950, "Total": 1339.37, "Colour": "#EEA200" }, { "Year": 1951, "Total": 1493.89, "Colour": "#EFA300" }, { "Year": 1952, "Total": 852.01, "Colour": "#EFA400" }, { "Year": 1953, "Total": 1605.97, "Colour": "#EFA600" }, { "Year": 1954, "Total": 2266.82, "Colour": "#EFA700" }, { "Year": 1955, "Total": 2068.2, "Colour": "#F0A800" }, { "Year": 1956, "Total": 3102.5, "Colour": "#F0AA00" }, { "Year": 1957, "Total": 1746.88, "Colour": "#F0AB00" }, { "Year": 1958, "Total": 2109.4, "Colour": "#F0AD00" }, { "Year": 1959, "Total": 1551.89, "Colour": "#F1AE00" }, { "Year": 1960, "Total": 1909.31, "Colour": "#F1AF00" }, { "Year": 1961, "Total": 1252.17, "Colour": "#F1B100" }, { "Year": 1962, "Total": 1358.61, "Colour": "#F1B200" }, { "Year": 1963, "Total": 1903.83, "Colour": "#F1B400" }, { "Year": 1964, "Total": 1885, "Colour": "#F2B500" }, { "Year": 1965, "Total": 1937.27, "Colour": "#F2B600" }, { "Year": 1966, "Total": 2776.46, "Colour": "#F2B800" }, { "Year": 1967, "Total": 2209.25, "Colour": "#F2B900" }, { "Year": 1968, "Total": 1803.73, "Colour": "#F3BA00" }, { "Year": 1969, "Total": 2103.2, "Colour": "#F3BC00" }, { "Year": 1970, "Total": 1701.04, "Colour": "#F3BD00" }, { "Year": 1971, "Total": 2247.59, "Colour": "#F3BF00" }, { "Year": 1972, "Total": 2409.87, "Colour": "#F4C000" }, { "Year": 1973, "Total": 2578.73, "Colour": "#F4C100" }, { "Year": 1974, "Total": 4090.98, "Colour": "#F4C300" }, { "Year": 1975, "Total": 2480.04, "Colour": "#F4C400" }, { "Year": 1976, "Total": 3254.74, "Colour": "#F5C600" }, { "Year": 1977, "Total": 3443.73, "Colour": "#F5C700" }, { "Year": 1978, "Total": 4102.96, "Colour": "#F5C800" }, { "Year": 1979, "Total": 3707.64, "Colour": "#F5CA00" }, { "Year": 1980, "Total": 3679.61, "Colour": "#F6CB00" }, { "Year": 1981, "Total": 3362.52, "Colour": "#F6CD00" }, { "Year": 1982, "Total": 3217.61, "Colour": "#F6CE00" }, { "Year": 1983, "Total": 4110.2, "Colour": "#F6CF00" }, { "Year": 1984, "Total": 4685.47, "Colour": "#F7D100" }, { "Year": 1985, "Total": 4623.09, "Colour": "#F7D200" }, { "Year": 1986, "Total": 3752.39, "Colour": "#F7D300" }, { "Year": 1987, "Total": 4506.35, "Colour": "#F7D500" }, { "Year": 1988, "Total": 3809.5, "Colour": "#F8D600" }, { "Year": 1989, "Total": 3556.24, "Colour": "#F8D800" }, { "Year": 1990, "Total": 3019.46, "Colour": "#F8D900" }, { "Year": 1991, "Total": 2928.56, "Colour": "#F8DA00" }, { "Year": 1992, "Total": 3348.3, "Colour": "#F8DC00" }, { "Year": 1993, "Total": 3616.52, "Colour": "#F9DD00" }, { "Year": 1994, "Total": 2905.55, "Colour": "#F9DF00" }, { "Year": 1995, "Total": 3108.05, "Colour": "#F9E000" }, { "Year": 1996, "Total": 2843.41, "Colour": "#F9E100" }, { "Year": 1997, "Total": 2438.09, "Colour": "#FAE300" }, { "Year": 1998, "Total": 1819.39, "Colour": "#FAE400" }, { "Year": 1999, "Total": 2070.43, "Colour": "#FAE600" }, { "Year": 2000, "Total": 2470.57, "Colour": "#FAE700" }, { "Year": 2001, "Total": 1963.98, "Colour": "#FBE800" }, { "Year": 2002, "Total": 1923.26, "Colour": "#FBEA00" }, { "Year": 2003, "Total": 1310.29, "Colour": "#FBEB00" }, { "Year": 2004, "Total": 2049.49, "Colour": "#FBEC00" }, { "Year": 2005, "Total": 1867.2, "Colour": "#FCEE00" }, { "Year": 2006, "Total": 2668.68, "Colour": "#FCEF00" }, { "Year": 2007, "Total": 1440.27, "Colour": "#FCF100" }, { "Year": 2008, "Total": 1477.62, "Colour": "#FCF200" }, { "Year": 2009, "Total": 803.44, "Colour": "#FDF300" }, { "Year": 2010, "Total": 1526.86, "Colour": "#FDF500" }, { "Year": 2011, "Total": 880.19, "Colour": "#FDF600" }, { "Year": 2012, "Total": 1189.81, "Colour": "#FDF800" }, { "Year": 2013, "Total": 1822.75, "Colour": "#FEF900" }, { "Year": 2014, "Total": 1067.78, "Colour": "#FEFA00" }, { "Year": 2015, "Total": 1359.35, "Colour": "#FEFC00" }, { "Year": 2016, "Total": 1842.08, "Colour": "#FEFD00" }, { "Year": 2017, "Total": 242.96, "Colour": "#FFFF00" }]
+
+
+    x.domain(dataset.map(function (d) { return d.Year; }));
+    y.domain([0, d3.max(dataset, function (d) { return d.Total; })]);
+
+    var xAxis = d3.axisBottom(x)
+        .tickValues(x.domain().filter(function (d, i) { return !(i % 5) }));
+
+    var yAxis = d3.axisLeft(y).ticks(10);
+
+    g.append("g")
+        .attr("class", "xaxis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
+
+    g.append("g")
+        .attr("class", "yaxis")
+        .call(yAxis)
+        .append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 6)
+        .attr("dy", "0.71em")
+        .attr("text-anchor", "end")
+        .text("Frequency");
+
+    g.selectAll(".bar")
+        .data(dataset)
+        .enter().append("rect")
+        .attr("class", "bar")
+        .attr("x", function (d) { return x(d.Year); })
+        .attr("y", function (d) { return y(d.Total); })
+        .attr("width", x.bandwidth())
+        .attr("height", function (d) { return height - y(d.Total); })
+        .attr("fill", function (d) { return d.Colour; });;
+
+    d3.select("p")
+        .on("click", function (dataset) {
+
+            var dataset = [{ "Year": 1901, "Total": 84.64, "Colour": "#E35E00" }, { "Year": 1902, "Total": 52.06, "Colour": "#E35F00" }, { "Year": 1903, "Total": 59.54, "Colour": "#E36000" }, { "Year": 1904, "Total": 72.96, "Colour": "#E36200" }, { "Year": 1905, "Total": 106.02, "Colour": "#E36300" }, { "Year": 1906, "Total": 96.19, "Colour": "#E46400" }, { "Year": 1907, "Total": 100.7, "Colour": "#E46600" }, { "Year": 1908, "Total": 172.19, "Colour": "#E46700" }, { "Year": 1909, "Total": 177.51, "Colour": "#E46900" }, { "Year": 1910, "Total": 205.72, "Colour": "#E56A00" }, { "Year": 1911, "Total": 173.22, "Colour": "#E56B00" }, { "Year": 1912, "Total": 85.96, "Colour": "#E56D00" }, { "Year": 1913, "Total": 202.79, "Colour": "#E56E00" }, { "Year": 1914, "Total": 112.26, "Colour": "#E67000" }, { "Year": 1915, "Total": 265.59, "Colour": "#E67100" }, { "Year": 1916, "Total": 282.97, "Colour": "#E67200" }, { "Year": 1917, "Total": 242.97, "Colour": "#E67400" }, { "Year": 1918, "Total": 224.07, "Colour": "#E77500" }, { "Year": 1919, "Total": 95.21, "Colour": "#E77600" }, { "Year": 1920, "Total": 117.72, "Colour": "#E77800" }, { "Year": 1921, "Total": 270.41, "Colour": "#E77900" }, { "Year": 1922, "Total": 238.2, "Colour": "#E87B00" }, { "Year": 1923, "Total": 314.48, "Colour": "#E87C00" }, { "Year": 1924, "Total": 517.59, "Colour": "#E87D00" }, { "Year": 1925, "Total": 90.88, "Colour": "#E87F00" }, { "Year": 1926, "Total": 697.9, "Colour": "#E98000" }, { "Year": 1927, "Total": 313.33, "Colour": "#E98200" }, { "Year": 1928, "Total": 364.12, "Colour": "#E98300" }, { "Year": 1929, "Total": 296.06, "Colour": "#E98400" }, { "Year": 1930, "Total": 642.58, "Colour": "#EA8600" }, { "Year": 1931, "Total": 442.13, "Colour": "#EA8700" }, { "Year": 1932, "Total": 120.13, "Colour": "#EA8900" }, { "Year": 1933, "Total": 65.91, "Colour": "#EA8A00" }, { "Year": 1934, "Total": 533.86, "Colour": "#EA8B00" }, { "Year": 1935, "Total": 1475.24, "Colour": "#EB8D00" }, { "Year": 1936, "Total": 679.95, "Colour": "#EB8E00" }, { "Year": 1937, "Total": 713.32, "Colour": "#EB8F00" }, { "Year": 1938, "Total": 564.2, "Colour": "#EB9100" }, { "Year": 1939, "Total": 106.2, "Colour": "#EC9200" }, { "Year": 1940, "Total": 1522.83, "Colour": "#EC9400" }, { "Year": 1941, "Total": 592.22, "Colour": "#EC9500" }, { "Year": 1942, "Total": 695.94, "Colour": "#EC9600" }, { "Year": 1943, "Total": 316.42, "Colour": "#ED9800" }, { "Year": 1944, "Total": 399.36, "Colour": "#ED9900" }, { "Year": 1945, "Total": 1123.46, "Colour": "#ED9B00" }, { "Year": 1946, "Total": 1197.25, "Colour": "#ED9C00" }, { "Year": 1947, "Total": 847.67, "Colour": "#EE9D00" }, { "Year": 1948, "Total": 1439.05, "Colour": "#EE9F00" }, { "Year": 1949, "Total": 1406.39, "Colour": "#EEA000" }, { "Year": 1950, "Total": 1339.37, "Colour": "#EEA200" }, { "Year": 1951, "Total": 1493.89, "Colour": "#EFA300" }, { "Year": 1952, "Total": 852.01, "Colour": "#EFA400" }, { "Year": 1953, "Total": 1605.97, "Colour": "#EFA600" }, { "Year": 1954, "Total": 2266.82, "Colour": "#EFA700" }, { "Year": 1955, "Total": 2068.2, "Colour": "#F0A800" }, { "Year": 1956, "Total": 3102.5, "Colour": "#F0AA00" }, { "Year": 1957, "Total": 1746.88, "Colour": "#F0AB00" }, { "Year": 1958, "Total": 2109.4, "Colour": "#F0AD00" }, { "Year": 1959, "Total": 1551.89, "Colour": "#F1AE00" }, { "Year": 1960, "Total": 1909.31, "Colour": "#F1AF00" }, { "Year": 1961, "Total": 1252.17, "Colour": "#F1B100" }, { "Year": 1962, "Total": 1358.61, "Colour": "#F1B200" }, { "Year": 1963, "Total": 1903.83, "Colour": "#F1B400" }, { "Year": 1964, "Total": 1885, "Colour": "#F2B500" }, { "Year": 1965, "Total": 1937.27, "Colour": "#F2B600" }, { "Year": 1966, "Total": 2776.46, "Colour": "#F2B800" }, { "Year": 1967, "Total": 2209.25, "Colour": "#F2B900" }, { "Year": 1968, "Total": 1803.73, "Colour": "#F3BA00" }, { "Year": 1969, "Total": 2103.2, "Colour": "#F3BC00" }, { "Year": 1970, "Total": 1701.04, "Colour": "#F3BD00" }, { "Year": 1971, "Total": 2247.59, "Colour": "#F3BF00" }, { "Year": 1972, "Total": 2409.87, "Colour": "#F4C000" }, { "Year": 1973, "Total": 2578.73, "Colour": "#F4C100" }, { "Year": 1974, "Total": 4090.98, "Colour": "#F4C300" }, { "Year": 1975, "Total": 2480.04, "Colour": "#F4C400" }, { "Year": 1976, "Total": 3254.74, "Colour": "#F5C600" }, { "Year": 1977, "Total": 3443.73, "Colour": "#F5C700" }, { "Year": 1978, "Total": 4102.96, "Colour": "#F5C800" }, { "Year": 1979, "Total": 3707.64, "Colour": "#F5CA00" }, { "Year": 1980, "Total": 3679.61, "Colour": "#F6CB00" }, { "Year": 1981, "Total": 3362.52, "Colour": "#F6CD00" }, { "Year": 1982, "Total": 3217.61, "Colour": "#F6CE00" }, { "Year": 1983, "Total": 4110.2, "Colour": "#F6CF00" }, { "Year": 1984, "Total": 4685.47, "Colour": "#F7D100" }, { "Year": 1985, "Total": 4623.09, "Colour": "#F7D200" }, { "Year": 1986, "Total": 3752.39, "Colour": "#F7D300" }, { "Year": 1987, "Total": 4506.35, "Colour": "#F7D500" }, { "Year": 1988, "Total": 3809.5, "Colour": "#F8D600" }, { "Year": 1989, "Total": 3556.24, "Colour": "#F8D800" }, { "Year": 1990, "Total": 3019.46, "Colour": "#F8D900" }, { "Year": 1991, "Total": 2928.56, "Colour": "#F8DA00" }, { "Year": 1992, "Total": 3348.3, "Colour": "#F8DC00" }, { "Year": 1993, "Total": 3616.52, "Colour": "#F9DD00" }, { "Year": 1994, "Total": 2905.55, "Colour": "#F9DF00" }, { "Year": 1995, "Total": 3108.05, "Colour": "#F9E000" }, { "Year": 1996, "Total": 2843.41, "Colour": "#F9E100" }, { "Year": 1997, "Total": 2438.09, "Colour": "#FAE300" }, { "Year": 1998, "Total": 1819.39, "Colour": "#FAE400" }, { "Year": 1999, "Total": 2070.43, "Colour": "#FAE600" }, { "Year": 2000, "Total": 2470.57, "Colour": "#FAE700" }, { "Year": 2001, "Total": 1963.98, "Colour": "#FBE800" }, { "Year": 2002, "Total": 1923.26, "Colour": "#FBEA00" }, { "Year": 2003, "Total": 1310.29, "Colour": "#FBEB00" }, { "Year": 2004, "Total": 2049.49, "Colour": "#FBEC00" }, { "Year": 2005, "Total": 1867.2, "Colour": "#FCEE00" }, { "Year": 2006, "Total": 2668.68, "Colour": "#FCEF00" }, { "Year": 2007, "Total": 1440.27, "Colour": "#FCF100" }, { "Year": 2008, "Total": 1477.62, "Colour": "#FCF200" }, { "Year": 2009, "Total": 803.44, "Colour": "#FDF300" }, { "Year": 2010, "Total": 1526.86, "Colour": "#FDF500" }, { "Year": 2011, "Total": 880.19, "Colour": "#FDF600" }, { "Year": 2012, "Total": 1189.81, "Colour": "#FDF800" }, { "Year": 2013, "Total": 1822.75, "Colour": "#FEF900" }, { "Year": 2014, "Total": 1067.78, "Colour": "#FEFA00" }, { "Year": 2015, "Total": 1359.35, "Colour": "#FEFC00" }, { "Year": 2016, "Total": 1842.08, "Colour": "#FEFD00" }, { "Year": 2017, "Total": 242.96, "Colour": "#FFFF00" }]
+
+            var dataset = dataset.map(function (d, i) {
+                return {
+                    Year: d.Year,
+                    Total: d.Total + i * 100,
+                    Colour: d.Colour
+                };
+            });
+
+            x.domain(dataset.map(function (d) { return d.Year; }));
+            y.domain([0, d3.max(dataset, function (d) { return d.Total; })]);
+
+            var xAxis = d3.axisBottom(x)
+                .tickValues(x.domain().filter(function (d, i) { return !(i % 5) }));
+
+            var yAxis = d3.axisLeft(y).ticks(10);
+
+            g.select("xaxis")
+                .transition()
+                .duration(1000)
+                .call(xAxis);
+
+            g.select("yaxis")
+                .transition()
+                .duration(1000)
+                .call(yAxis);
+
+            var newHeight = 1000
+            g.selectAll(".bar")
+                .data(dataset)
+                .transition()
+                .delay(function (d, i) {
+                    return i / dataset.length * newHeight;
+                })
+                .duration(500)
+                .attr("class", "bar")
+                .attr("x", function (d) { return x(d.Year); })
+                .attr("y", function (d) { return y(d.Total); })
+                .attr("width", x.bandwidth())
+                .attr("height", function (d) { return height - y(d.Total); })
+                .attr("fill", function (d) { return d.Colour; });;
+
+
+
+
+
+        })
+
+
+</script>
+</body>
