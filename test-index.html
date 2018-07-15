@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script>
+</head>
+<body>
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script>
+    var body = d3.select('body');
+
+    var svg = body.append('svg')
+        .attr("width", 500)
+        .attr("height", 500);
+
+    var myCircle = svg.append('circle');
+
+    var circleAttrs = {
+        r: 20,
+        fill: 'red',
+        cx: 100,
+        cy: 100,
+        stroke: 'black'
+    }
+
+    myCircle.datum(circleAttrs)
+
+</script>
+        
+
+
+
+</body>
+</html>

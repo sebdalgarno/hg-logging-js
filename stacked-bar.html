@@ -1,8 +1,5 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-<head>
-    <link href="bootstrap.min.css" rel="stylesheet" media="screen">
-  </head>
 <style>
     .axis--x path {
         display: none;
@@ -63,10 +60,6 @@
         <input id="slider" type="range" min="1901" max="2017" step="1" value="2017" orient="horizontal">
     
 <svg width="960" height="500"></svg>
-
-<script src="https://d3js.org/d3.v4.min.js"></script>
-<script src="http://code.jquery.com/jquery.js"></script>
-<script src="bootstrap.min.js"></script>
 <script>
 
     var formatToolTip = d3.format(",");
@@ -85,6 +78,7 @@
         return {
             Year: d.Year,
             Total: +d.Total,
+            Total2: +d.Total/2,
             Colour: d.Colour,
         };
     }, function (error, dataset) {
